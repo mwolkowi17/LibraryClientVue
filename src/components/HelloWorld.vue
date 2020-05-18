@@ -1,58 +1,178 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <v-app id="inspire">
+    <!--<v-navigation-drawer
+      v-model="drawer"
+      app
+      clipped
+    >
+      <v-list dense>
+        <v-list-item link>
+          <v-list-item-action>
+            <v-icon>mdi-view-dashboard</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link>
+          <v-list-item-action>
+            <v-icon>mdi-settings</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Settings</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    -->
+    <v-app-bar app clipped-left>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Application</v-toolbar-title>
+    </v-app-bar>
+
+    <v-content>
+      <v-container class="fill-height" fluid>
+        <v-row align="top" justify="center">
+          <v-col>
+            First
+            <v-card class="mx-auto" outlined>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <div class="overline mb-4">OVERLINE</div>
+                  <v-list-item-title class="headline mb-1">Books</v-list-item-title>
+                  <v-simple-table height="300px">
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">ID</th>
+                          <th class="text-left">Title</th>
+                          <th class="text-left">Author</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item,key) in books" v-bind:key="key.id">
+                          <td>{{ item.bookCID }}</td>
+                          <td>{{ item.titleC }}</td>
+                          <td>{{ item.authorC }}</td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-card-actions>
+                
+              </v-card-actions>
+            </v-card>
+          </v-col>
+          <v-col>
+            Second
+            <v-card class="mx-auto" outlined>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <div class="overline mb-4">OVERLINE</div>
+                  <v-list-item-title class="headline mb-1">Readers</v-list-item-title>
+                  <v-simple-table height="300px">
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">ID</th>
+                          <th class="text-left">Name</th>
+                          <th class="text-left">Surname</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item,keyb) in readers" v-bind:key="keyb.id">
+                          <td>{{ item.readerID }}</td>
+                          <td>{{ item.name }}</td>
+                          <td>{{ item.surname }}</td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-card-actions>
+               
+              </v-card-actions>
+            </v-card>
+          </v-col>
+          <v-col>
+            Third
+            <v-card class="mx-auto" outlined>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <div class="overline mb-4">OVERLINE</div>
+                  <v-list-item-title class="headline mb-1">Add Book</v-list-item-title>
+                  <v-row>
+                    <v-col>
+                    <v-text-field
+                      :rules="nameRules"
+                     
+                      label="title"
+                      required
+                    ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                    <v-text-field
+                      v-model="Author"
+                      :rules="nameRules"
+                     
+                      label="author"
+                      required
+                    ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-card-actions>
+                <v-btn text>Add Book</v-btn>
+                
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+
+    <v-footer app>
+      <span>&copy; 2020</span>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
-</script>
+import Vue from "vue";
+import VueRouter from "vue-router";
+import axios from "axios";
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+Vue.use(VueRouter);
+
+export default {
+  props: {
+    source: String
+  },
+  data() {
+    return {
+      drawer: null,
+      books: "",
+      readers: ""
+    };
+  },
+  created() {
+    this.$vuetify.theme.dark = true;
+    axios
+      .get("https://localhost:44381/api/BookCs")
+      .then(res => (this.books = res.data));
+    axios
+      .get("https://localhost:44381/api/Readers")
+      .then(res => (this.readers = res.data));
+  },
+  methods: {}
+};
+</script>
