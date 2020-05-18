@@ -40,7 +40,7 @@
                 <v-list-item-content>
                   <div class="overline mb-4">OVERLINE</div>
                   <v-list-item-title class="headline mb-1">Books</v-list-item-title>
-                  <v-simple-table height="300px">
+                  <v-simple-table height="450px">
                     <template v-slot:default>
                       <thead>
                         <tr>
@@ -50,7 +50,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(item,key) in books" v-bind:key="key.id">
+                        <tr v-for="(item,keyb) in books" v-bind:key="keyb">
                           <td>{{ item.bookCID }}</td>
                           <td>{{ item.titleC }}</td>
                           <td>{{ item.authorC }}</td>
@@ -61,9 +61,7 @@
                 </v-list-item-content>
               </v-list-item>
 
-              <v-card-actions>
-                
-              </v-card-actions>
+              <v-card-actions></v-card-actions>
             </v-card>
           </v-col>
           <v-col>
@@ -73,7 +71,7 @@
                 <v-list-item-content>
                   <div class="overline mb-4">OVERLINE</div>
                   <v-list-item-title class="headline mb-1">Readers</v-list-item-title>
-                  <v-simple-table height="300px">
+                  <v-simple-table height="450px">
                     <template v-slot:default>
                       <thead>
                         <tr>
@@ -83,7 +81,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(item,keyb) in readers" v-bind:key="keyb.id">
+                        <tr v-for="(item,keyb) in readers" v-bind:key="keyb">
                           <td>{{ item.readerID }}</td>
                           <td>{{ item.name }}</td>
                           <td>{{ item.surname }}</td>
@@ -94,47 +92,63 @@
                 </v-list-item-content>
               </v-list-item>
 
-              <v-card-actions>
-               
-              </v-card-actions>
+              <v-card-actions></v-card-actions>
             </v-card>
           </v-col>
           <v-col>
             Third
-            <v-card class="mx-auto" outlined>
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <div class="overline mb-4">OVERLINE</div>
-                  <v-list-item-title class="headline mb-1">Add Book</v-list-item-title>
-                  <v-row>
-                    <v-col>
-                    <v-text-field
-                      :rules="nameRules"
-                     
-                      label="title"
-                      required
-                    ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                    <v-text-field
-                      v-model="Author"
-                      :rules="nameRules"
-                     
-                      label="author"
-                      required
-                    ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-list-item-content>
-              </v-list-item>
+            <v-row>
+              <v-col>
+              <v-card class="mx-auto" outlined>
+                <v-list-item three-line>
+                  <v-list-item-content>
+                    <div class="overline mb-4">OVERLINE</div>
+                    <v-list-item-title class="headline mb-1">Add Book</v-list-item-title>
+                    <v-row>
+                      <v-col>
+                        <v-text-field v-model="titleSource" label="title" required></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-text-field v-model="authorSource" label="author" required></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-list-item-content>
+                </v-list-item>
 
-              <v-card-actions>
-                <v-btn text>Add Book</v-btn>
-                
-              </v-card-actions>
-            </v-card>
+                <v-card-actions>
+                  <v-btn text v-on:click="addBookMeth">Add Book</v-btn>
+                </v-card-actions>
+              </v-card>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+              <v-card class="mx-auto" outlined>
+                <v-list-item three-line>
+                  <v-list-item-content>
+                    <div class="overline mb-4">OVERLINE</div>
+                    <v-list-item-title class="headline mb-1">Add Reader</v-list-item-title>
+                    <v-row>
+                      <v-col>
+                        <v-text-field v-model="nameSource" label="name" required></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-text-field v-model="surnameSource" label="surname" required></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-card-actions>
+                  <v-btn text v-on:click="addReaderMeth">Add Reader</v-btn>
+                </v-card-actions>
+              </v-card>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-container>
@@ -161,7 +175,12 @@ export default {
     return {
       drawer: null,
       books: "",
-      readers: ""
+      readers: "",
+      titleSource: "",
+      authorSource: "",
+      keyb: 0,
+      nameSource:"",
+      surnameSource:""
     };
   },
   created() {
@@ -173,6 +192,43 @@ export default {
       .get("https://localhost:44381/api/Readers")
       .then(res => (this.readers = res.data));
   },
-  methods: {}
+  methods: {
+    addBookMeth: function addbook() {
+      axios.post("https://localhost:44381/api/BookCs", {
+        titleC: this.titleSource,
+        authorC: this.authorSource,
+        rented: false,
+        rentedbyReader: 0,
+        rentData: "0001-01-01T00:00:00",
+        dropOfData: "0001-01-01T00:00:00",
+        aliasofReader: null
+      });
+      this.$forceUpdate();
+     axios
+      .get("https://localhost:44381/api/BookCs")
+      .then(res => (this.books = res.data));
+      this.keyb += 1;
+    },
+    addReaderMeth: function addreader(){
+      axios
+      .post("https://localhost:44381/api/Readers",{
+         "name": this.nameSource,
+        "surname": this.surnameSource,
+        "books": null,
+        "alias": "Ewa Danielska"
+      });
+
+      this.$forceUpdate();
+      
+      
+       
+      axios
+      .get("https://localhost:44381/api/Readers")
+      .then(res => (this.readers = res.data))
+      .then(this.keyb+=1)
+     
+      
+    }
+  }
 };
 </script>
